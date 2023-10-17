@@ -28,8 +28,8 @@ system.mem_ranges = [AddrRange('1024MB')]
 system.cpu = X86TimingSimpleCPU() #All instructions except memory requests executed in single cycle
 
 #creating caches
-system.cpu.icache = L1ICache()
-system.cpu.dcache = L1DCache()
+system.cpu.icache = L1ICache(options)
+system.cpu.dcache = L1DCache(options)
 
 #connecting caches to cpu ports
 system.cpu.icache.connectCPU(system.cpu)
@@ -48,7 +48,7 @@ system.cpu.icache.connectBus(system.l2bus)
 system.cpu.dcache.connectBus(system.l2bus)
 
 #L2 cache
-system.l2cache = L2Cache()
+system.l2cache = L2Cache(options)
 system.l2cache.connectCPUSideBus(system.l2bus)
 system.l2cache.connectMemSideBus(system.membus)
 
