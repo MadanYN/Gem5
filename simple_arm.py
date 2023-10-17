@@ -3,7 +3,7 @@
 import m5
 from m5.objects import *
 from caches import *
-m5.util.addToPath("../../")
+m5.util.addToPath("../../../")
 
 from common import SimpleOpts
 
@@ -29,7 +29,7 @@ system.clk_domain.voltage_domain = VoltageDomain()
 
 system.mem_mode = 'timing'
 system.mem_ranges = [AddrRange('1024MB')]
-system.cpu = X86TimingSimpleCPU() #All instructions except memory requests executed in single cycle
+system.cpu = ArmTimingSimpleCPU() #All instructions except memory requests executed in single cycle
 
 #creating caches
 system.cpu.icache = L1ICache(args)
@@ -56,7 +56,6 @@ system.l2cache = L2Cache(args)
 system.l2cache.connectCPUSideBus(system.l2bus)
 system.l2cache.connectMemSideBus(system.membus)
 
-
 system.cpu.createInterruptController()
 system.system_port = system.membus.cpu_side_ports
 
@@ -66,13 +65,13 @@ system.mem_ctrl.dram = DDR3_1600_8x8()
 system.mem_ctrl.dram.range = system.mem_ranges[0]
 system.mem_ctrl.port = system.membus.mem_side_ports
 
-binary = 'tests/test-progs/hello/bin/x86/linux/hello'
+binary = 'tests/test-progs/hello/bin/arm/linux/hello'
+#binary = 'cpu_tests/benchmarks/bin/arm/Bubblesort'
 system.workload = SEWorkload.init_compatible(binary)
 
 # system.workload = SEWorkload.init_compatible(options.binary)
-
 process = Process()
-process.cmd = ['cpu_tests/benchmarks/bin/arm/Bubblesort']
+process.cmd = [binary]
 system.cpu.workload = process
 system.cpu.createThreads()
 
