@@ -3,21 +3,24 @@
 import m5
 from m5.objects import *
 from caches import *
+m5.util.addToPath("../../")
+
 from common import SimpleOpts
 
 import argparse
 
-parser = argparse.ArgumentParser(description='A simple system with 2-level cache.')
+#parser = argparse.ArgumentParser(description='A simple system with 2-level cache.')
 # parser.add_argument("binary", default="", nargs="?", type=str,
 #                     help="Path to the binary to execute.")
-parser.add_argument("--l1i_size",
-                    help=f"L1 instruction cache size. Default: 16kB.")
-parser.add_argument("--l1d_size",
-                    help="L1 data cache size. Default: Default: 64kB.")
-parser.add_argument("--l2_size",
-                    help="L2 cache size. Default: 256kB.")
+#parser.add_argument("--l1i_size",
+#                    help=f"L1 instruction cache size. Default: 16kB.")
+#parser.add_argument("--l1d_size",
+#                    help="L1 data cache size. Default: Default: 64kB.")
+#parser.add_argument("--l2_size",
+#                    help="L2 cache size. Default: 256kB.")
 
-options = parser.parse_args()
+#options = parser.parse_args()
+args = SimpleOpts.parse_args()
 
 system = System() #System() class contains all info about the system being simuated
 system.clk_domain = SrcClockDomain()
@@ -29,8 +32,8 @@ system.mem_ranges = [AddrRange('1024MB')]
 system.cpu = X86TimingSimpleCPU() #All instructions except memory requests executed in single cycle
 
 #creating caches
-system.cpu.icache = L1ICache(options)
-system.cpu.dcache = L1DCache(options)
+system.cpu.icache = L1ICache(args)
+system.cpu.dcache = L1DCache(args)
 
 #connecting caches to cpu ports
 system.cpu.icache.connectCPU(system.cpu)
@@ -49,7 +52,7 @@ system.cpu.icache.connectBus(system.l2bus)
 system.cpu.dcache.connectBus(system.l2bus)
 
 #L2 cache
-system.l2cache = L2Cache(options)
+system.l2cache = L2Cache(args)
 system.l2cache.connectCPUSideBus(system.l2bus)
 system.l2cache.connectMemSideBus(system.membus)
 
