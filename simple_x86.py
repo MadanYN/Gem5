@@ -3,12 +3,13 @@
 import m5
 from m5.objects import *
 from caches import *
+from common import SimpleOpts
 
 import argparse
 
 parser = argparse.ArgumentParser(description='A simple system with 2-level cache.')
-parser.add_argument("binary", default="", nargs="?", type=str,
-                    help="Path to the binary to execute.")
+# parser.add_argument("binary", default="", nargs="?", type=str,
+#                     help="Path to the binary to execute.")
 parser.add_argument("--l1i_size",
                     help=f"L1 instruction cache size. Default: 16kB.")
 parser.add_argument("--l1d_size",

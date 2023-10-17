@@ -1,5 +1,6 @@
 #Cache Architecture
 from m5.objects import Cache
+from Common import SimpleOpts
 
 #Base class for creating L1 I & D caches
 #Note : Read the Cache class to understand the member fields and methods
@@ -23,6 +24,9 @@ class L1Cache(Cache):
 
 
 class L1ICache(L1Cache):
+	SimpleOpts.add_option(
+        "--l1i_size", help=f"L1 instruction cache size. Default: {size}"
+    )
 	def __init__(self, options=None):
 		super(L1ICache, self).__init__(options)
 		if not options or not options.l1i_size:
@@ -35,6 +39,10 @@ class L1ICache(L1Cache):
 		self.cpu_side = cpu.icache_port
 
 class L1DCache(L1Cache):
+	SimpleOpts.add_option(
+        "--l1d_size", help=f"L1 data cache size. Default: {size}"
+    )
+
 	def __init__(self, options=None):
 		super(L1DCache, self).__init__(options)
 		if not options or not options.l1d_size:
@@ -46,6 +54,8 @@ class L1DCache(L1Cache):
 		self.cpu_side = cpu.dcache_port
 
 class L2Cache(Cache):
+	SimpleOpts.add_option("--l2_size", help=f"L2 cache size. Default: {size}")
+	
 	def __init__(self, options=None):
 		super(L2Cache, self).__init__()
 		if not options or not options.l2_size:
