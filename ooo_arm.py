@@ -30,7 +30,7 @@ system.clk_domain.voltage_domain = VoltageDomain()
 
 system.mem_mode = 'timing'
 system.mem_ranges = [AddrRange('1024MB')]
-system.cpu = ArmTimingSimpleCPU() #All instructions except memory requests executed in single cycle
+system.cpu = ArmO3CPU() #All instructions except memory requests executed in single cycle
 
 #creating caches
 system.cpu.icache = L1ICache(args)
