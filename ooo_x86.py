@@ -3,7 +3,7 @@
 import m5
 from m5.objects import *
 from caches import *
-m5.util.addToPath("../../")
+#m5.util.addToPath("../../")
 m5.util.addToPath("")
 
 from common import SimpleOpts
@@ -72,7 +72,7 @@ system.mem_ctrl.dram.range = system.mem_ranges[0]
 system.mem_ctrl.port = system.membus.mem_side_ports
 
 #binary = 'tests/test-progs/hello/bin/x86/linux/hello'
-binary = 'tests/primes'
+binary = 'tests/my_tests/primes_x86'
 system.workload = SEWorkload.init_compatible(binary)
 
 # system.workload = SEWorkload.init_compatible(options.binary)

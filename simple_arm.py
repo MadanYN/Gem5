@@ -67,7 +67,7 @@ system.mem_ctrl.dram.range = system.mem_ranges[0]
 system.mem_ctrl.port = system.membus.mem_side_ports
 
 #binary = 'tests/test-progs/hello/bin/arm/linux/hello'
-binary = 'tests/primes_arm'
+binary = 'tests/my_tests/primes_arm'
 system.workload = SEWorkload.init_compatible(binary)
 
 # system.workload = SEWorkload.init_compatible(options.binary)
