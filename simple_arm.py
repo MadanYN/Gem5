@@ -3,7 +3,7 @@
 import m5
 from m5.objects import *
 from caches import *
-m5.util.addToPath("../../../")
+#m5.util.addToPath("../../../")
 m5.util.addToPath("")
 
 from common import SimpleOpts
