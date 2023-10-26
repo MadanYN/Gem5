@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define N 5
+#define N 1000000
 
 int main(){
     // bool isPrime[N+1];
