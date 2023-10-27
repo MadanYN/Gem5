@@ -62,7 +62,7 @@ system.system_port = system.membus.cpu_side_ports
 
 #memory controller
 system.mem_ctrl = MemCtrl()
-system.mem_ctrl.dram = DDR3_1600_8x8()
+system.mem_ctrl.dram = DDR3_1600_8x8()    
 system.mem_ctrl.dram.range = system.mem_ranges[0]
 system.mem_ctrl.port = system.membus.mem_side_ports
 
