@@ -100,9 +100,9 @@ class MySystem(System):
     # create the interrupt controller for the CPU
     self.cpu.createInterruptController()
 
-    self.cpu.interrupts[0].pio = self.membus.mem_side_ports
-    self.cpu.interrupts[0].int_requestor = self.membus.cpu_side_ports
-    self.cpu.interrupts[0].int_responder = self.membus.mem_side_ports
+    #self.cpu.interrupts[0].pio = self.membus.mem_side_ports
+    #self.cpu.interrupts[0].int_requestor = self.membus.cpu_side_ports
+    #self.cpu.interrupts[0].int_responder = self.membus.mem_side_ports
 
     self.createMemoryControllersDDR4()
 

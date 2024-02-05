@@ -29,7 +29,7 @@
 
 import m5
 from m5.objects import *
-from m5.objects import X86ISA
+#from m5.objects import X86ISA
 import math
 
 class port0(FUDesc):
@@ -187,7 +187,7 @@ class VerbatimCPU(DerivO3CPU):
     """ Uncalibrated: Configured based on micro-architecture documentation """
 
     branchPred = BranchPred()
-
+    isa = ArmISA()
     # Pipeline delays
     # https://gem5-users.gem5.narkive.com/LNMJQ1M5/model-deeper-pipeline-in-x86#post2
     # to model 15 stage pipeline choose depth parameter as 3
@@ -226,7 +226,7 @@ class TunedCPU(DerivO3CPU):
     """ Calibrated: configured to match the performance of hardware """
 
     branchPred = BranchPred()
-    isa = X86ISA()
+    isa = ArmISA()
 
     # Pipeline delays
     fetchToDecodeDelay = depth
@@ -258,6 +258,96 @@ class TunedCPU(DerivO3CPU):
     # store
     fuPool.FUList[4].count = 12
     fuPool.FUList[6].count = 3
+
+    fetchBufferSize = 16
+    fetchQueueSize = 64
+    numROBEntries = 336
+    numIQEntries = 146
+    LQEntries = 72 * 2
+    SQEntries = 56 * 2
+    numPhysIntRegs = 270
+    numPhysFloatRegs = 252
+
+class TunedCPU_I(DerivO3CPU):
+    """This is done by Madan to test effect of each of the changes made in TunedCPU
+	TunedCPU_I keeps changes in pipeline widths only
+    """
+
+    branchPred = BranchPred()
+    #isa = X86ISA()
+
+    # Pipeline delays
+    fetchToDecodeDelay = depth
+    decodeToRenameDelay = 1
+    renameToIEWDelay = 3*depth
+    issueToExecuteDelay = 1
+    iewToCommitDelay = 2*depth
+
+    forwardComSize = 19
+    backComSize = 19
+
+    # Pipeline widths
+    fetchWidth = width * 2
+    decodeWidth = width * 2
+    renameWidth = 3*width
+    issueWidth = 2*width
+    dispatchWidth = 2*width
+    wbWidth = 2*width
+    commitWidth = 2*width
+    squashWidth = 3*width
+
+    fuPool = ExecUnits()
+
+    fetchBufferSize = 16
+    fetchQueueSize = 64
+    numROBEntries = 336
+    numIQEntries = 146
+    LQEntries = 72 * 2
+    SQEntries = 56 * 2
+    numPhysIntRegs = 270
+    numPhysFloatRegs = 252
+
+class TunedCPU_II(DerivO3CPU):
+    """This is done by Madan to test effect of each of the changes made in TunedCPU
+        TunedCPU_II keeps
+        1. Changes in Pipeline widths
+        2. Two Int ALU in place of one in Port6
+        3. Six Memread and six memwrite in place of twelve in Port2 and Port4 respectively
+        4. Changed opLat for Int Div in Port0 and Port1"""
+
+    branchPred = BranchPred()
+    #isa = X86ISA()
+
+    # Pipeline delays
+    fetchToDecodeDelay = depth
+    decodeToRenameDelay = 1
+    renameToIEWDelay = 3*depth
+    issueToExecuteDelay = 1
+    iewToCommitDelay = 2*depth
+
+    forwardComSize = 19
+    backComSize = 19
+
+    # Pipeline widths
+    fetchWidth = width * 2
+    decodeWidth = width * 2
+    renameWidth = 3*width
+    issueWidth = 2*width
+    dispatchWidth = 2*width
+    wbWidth = 2*width
+    commitWidth = 2*width
+    squashWidth = 3*width
+
+    fuPool = ExecUnits()
+    # IntDiv()
+    fuPool.FUList[0].opList[1].opLat = 2
+    # IntMult()
+    fuPool.FUList[1].opList[1].opLat = 2
+    # Load
+    fuPool.FUList[2].count = 6
+    # store
+    fuPool.FUList[4].count = 6
+    fuPool.FUList[6].count = 2
 
     fetchBufferSize = 16
     fetchQueueSize = 64

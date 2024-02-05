@@ -25,7 +25,7 @@ args = SimpleOpts.parse_args()
 
 system = System() #System() class contains all info about the system being simuated
 system.clk_domain = SrcClockDomain()
-system.clk_domain.clock = '1GHz'
+system.clk_domain.clock = '1.5GHz'
 system.clk_domain.voltage_domain = VoltageDomain()
 
 system.mem_mode = 'timing'
@@ -77,6 +77,7 @@ system.cpu.workload = process
 system.cpu.createThreads()
 
 root = Root(full_system = False, system = system)
+
 m5.instantiate()
 print("Beginning simulation!")
 exit_event = m5.simulate()

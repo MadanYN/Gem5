@@ -42,9 +42,9 @@ from core import *
 #args = parser.parse_args()
 
 class TestSystem(MySystem):
-    _CPUModel = TunedCPU
+    _CPUModel = VerbatimCPU
 
-binary = 'tests/my_tests/primes_x86'
+binary = 'tests/my_tests/primes_arm'
 system = TestSystem()
 system.workload = SEWorkload.init_compatible(binary)
 

@@ -25,7 +25,7 @@ args = SimpleOpts.parse_args()
 
 system = System() #System() class contains all info about the system being simuated
 system.clk_domain = SrcClockDomain()
-system.clk_domain.clock = '1GHz'
+system.clk_domain.clock = '1.5GHz'
 system.clk_domain.voltage_domain = VoltageDomain()
 
 system.mem_mode = 'timing'
