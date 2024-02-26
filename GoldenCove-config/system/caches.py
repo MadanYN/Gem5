@@ -8,7 +8,7 @@ options from each individual class.
 """
 
 import m5
-from m5.objects import Cache, PIFPrefetcher, L2XBar
+from m5.objects import *
 
 
 """All options can be found at src/mem/cache/BaseCache.py in the offical gem5 repo"""
