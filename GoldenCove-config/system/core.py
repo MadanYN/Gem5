@@ -46,7 +46,7 @@ class port1(FUDesc):
               OpDesc(opClass = 'SimdDiv', opLat = 8, pipelined = True),
               OpDesc(opClass = 'SimdAlu', opLat = 1, pipelined = True),
               OpDesc(opClass = 'SimdFloatAlu', opLat = 4, pipelined = True),
-              OpDesc(opClass = 'FloatAdd', opLat = 2, pipelined = True),
+              OpDesc(opClass = 'SimdFAdd', opLat = 2, pipelined = True),
               OpDesc(opClass = 'SimdFloatAdd', opLat = 4, pipelined = True)
               ]
     count = 1
@@ -82,6 +82,8 @@ class port5(FUDesc):
               OpDesc(opClass = 'SimdFloatMultAcc', opLat = 12,pipelined = True),
               OpDesc(opClass = 'SimdAlu', opLat = 1, pipelined = True),
               OpDesc(opClass = 'SimdFloatAlu', opLat = 4, pipelined = True),
+              OpDesc(opClass = 'SimdFAdd', opLat = 2, pipelined = True),
+              OpDesc(opClass = 'SimdFloatAdd', opLat = 4, pipelined = True),
               # The below functional units are part of AMX (Advanced Matrix Extensions) AMX instruction 
               # are introduced for the first time in 12th gen, latency data is not publically available
               OpDesc(opClass = 'Matrix', opLat = 10, pipelined = True),
