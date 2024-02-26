@@ -13,6 +13,10 @@ from m5.objects import *
 from m5.objects import FUDesc
 import math
 
+"""The classes port0 through port11 are the execution units of Golden Cove. The functional units are described in Intel's
+official document and also in https://chipsandcheese.com/2021/12/02/popping-the-hood-on-golden-cove/ blogpost. Latency of
+the functional units are mostly taken from Agner Fog's microarchitecture blog """
+
 class port0(FUDesc):
     pass
 
@@ -60,8 +64,9 @@ class IndirectPred(SimpleIndirectPredictor):
     indirectPathLength = 7 # Previous indirect targets to use for path history
     indirectGHRBits = 16 # Indirect GHR number of bits
 
-""" The MultiperspectivePerceptronTAGE64KB branch predictor is the most powerful(in terms of hardware resources used) perceptron based branch
-predictor. Intel has only disclosed that a varient of hashed perceptron branch predictor has been used in Golden Cove. """
+""" The MultiperspectivePerceptronTAGE64KB branch predictor is the most powerful(in terms of hardware resources used) 
+perceptron based branch predictor. Intel has only disclosed that a varient of hashed perceptron branch predictor has 
+been used in Golden Cove. """
 class BranchPred(MultiperspectivePerceptronTAGE64KB):
     """number of entries in the BTB
     Haswell had a BTB of size 4096, accurate size of BTB is not available for modern architectures """
@@ -78,9 +83,9 @@ class VerbatimCPU(DerivO3CPU):
 
     branchPred = BranchPred()
 
-    """ Intel Core2 and Intel Atom architectures both have 16 pipeline stages and Agner Fog's blog claims that it was followed till skylake
-    icelake. AnandTech's blog mentions that P core of Alder Lake has increased number of pipeline stages, so I have taken the number of 
-    pipeline stages to be 20 """
+    """ Intel Core2 and Intel Atom architectures both have 16 pipeline stages and Agner Fog's blog claims that it was
+    followed till skylake icelake. AnandTech's blog mentions that P core of Alder Lake has increased number of pipeline 
+    stages, so I have taken the number of pipeline stages to be 20 """
 
     # Pipeline delays
     # https://gem5-users.gem5.narkive.com/LNMJQ1M5/model-deeper-pipeline-in-x86#post2
