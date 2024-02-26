@@ -81,27 +81,27 @@ class L1DCache(L1Cache):
         def connectCPU(self, cpu):
             self.cpu_side = cpu.dcache_port
 
-class MMUCache(PrefetchCache):
-    """These parameters are same as those in gem5-skylake-config"""
-    size = '8KB'
-    assoc = 8
-    tag_latency = 1
-    data_latency = 1
-    response_latency = 1
-    mshrs = 32
-    tgts_per_mshr = 8
+# class MMUCache(PrefetchCache):
+#     """These parameters are same as those in gem5-skylake-config"""
+#     size = '8KB'
+#     assoc = 8
+#     tag_latency = 1
+#     data_latency = 1
+#     response_latency = 1
+#     mshrs = 32
+#     tgts_per_mshr = 8
 
-    def __init__(self):
-        super(MMUCache, self).__init__()
+#     def __init__(self):
+#         super(MMUCache, self).__init__()
 
-    def connectCPU(self, cpu):
-        self.mmubus = L2XBar()
-        self.cpu_side = self.mmubus.mem_side_ports
-        for tlb in [cpu.itb, cpu.dtb]:
-            self.mmubus.cpu_side_ports = tlb.walker.port
+#     def connectCPU(self, cpu):
+#         self.mmubus = L2XBar()
+#         self.cpu_side = self.mmubus.mem_side_ports
+#         for tlb in [cpu.itb, cpu.dtb]:
+#             self.mmubus.cpu_side_ports = tlb.walker.port
         
-    def connectBus(self, bus):
-        self.mem_side = bus.cpu_side_ports
+#     def connectBus(self, bus):
+#         self.mem_side = bus.cpu_side_ports
 
 class L1iTLB(PrefetchCache):
     """L1 instruction TLB with defaut values"""
@@ -169,6 +169,30 @@ class L2TLB(PrefetchCache):
     def connectMemSideBus(self, bus):
         self.mem_side = bus.cpu_side_ports
 
+class MMUCache(PrefetchCache):
+    def __init__(self):
+        super(MMUCache, self).__init__()
+        self.l1iTLB = L1iTLB()
+        self.l1dTLB = L1dTLB()
+        self.l2TLB = L2TLB()
+
+        self.l2mmubus = L2XBar()
+
+        self.l1iTLB.connectMem(self.l2mmubus)
+        self.l1dTLB.connectMem(self.l2mmubus)
+        self.l2TLB.connectCPUSideBus(self.l2mmubus)
+    
+    def connectCPU(self, cpu):
+        # self.mmubus = L2XBar()
+        # self.cpu_side = self.mmubus.mem_side_ports
+        # for tlb in [cpu.itb, cpu.dtb]:
+        #     self.mmubus.cpu_side_ports = tlb.walker.port
+        # self.l1iTLB.connectCPU()
+        self.l1iTLB.connectCPU(cpu)
+        self.l1dTLB.connectCPU(cpu)
+    
+    def connectMem(self, bus):
+        self.l2TLB.connectMemSideBus(bus)
 
 
 class L2Cache(PrefetchCache):
