@@ -26,15 +26,15 @@ class PrefetchCache(Cache):
 class L1Cache(PrefetchCache):
     """Base L1 cache with default params"""
 
-    assoc = 12
+    assoc = 16
 
     tag_latency = 5
     data_latency = 5
     response_latency = 1
 
     """The MSHR values are taken from chips and cheese blogpost"""
-    mshr = 16
-    # tgts_per_mshr = 16
+    mshrs = 16
+    tgts_per_mshr = 16
     # write_buffers = 56
     # demand_mshr_reserve = 8
 
@@ -52,7 +52,7 @@ class L1Cache(PrefetchCache):
 class L1ICache(L1Cache):
     """L1 instruction cache with default values"""
 
-    size = '48KB'
+    size = '64kB'
     """icache memory is read-only from cpu point of view"""
     is_read_only = True
 
@@ -65,7 +65,7 @@ class L1ICache(L1Cache):
 class L1DCache(L1Cache):
     """L1 data cache with default values"""
 
-    size = '48KB'
+    size = '64kB'
 
     """The write buffer and write allocator params are taken as it is from gem5-skylake-config"""
     write_buffers = 128
@@ -78,8 +78,8 @@ class L1DCache(L1Cache):
     def __init__(self):
         super(L1DCache, self).__init__()
 
-        def connectCPU(self, cpu):
-            self.cpu_side = cpu.dcache_port
+    def connectCPU(self, cpu):
+        self.cpu_side = cpu.dcache_port
 
 # class MMUCache(PrefetchCache):
 #     """These parameters are same as those in gem5-skylake-config"""
@@ -106,7 +106,7 @@ class L1DCache(L1Cache):
 class L1iTLB(PrefetchCache):
     """L1 instruction TLB with defaut values"""
 
-    size = '2KB'
+    size = '2kB'
     assoc = 8
     """Latency numbers are not available yet. The chosen tag and data latencies are lesser 
     than those of L1I and L1D caches because of the smaller size of TLB
@@ -143,7 +143,7 @@ class L1dTLB(PrefetchCache):
     tgts_per_mshr = 8
 
     def __init__(self):
-        super(L1iTLB, self).__init__()
+        super(L1dTLB, self).__init__()
 
     def connectMem(self, bus):
         self.mem_side = bus.cpu_side_ports
@@ -155,7 +155,7 @@ class L1dTLB(PrefetchCache):
 class L2TLB(PrefetchCache):
     """L2 TLB with default values"""
 
-    size = '16KB'
+    size = '16kB'
     assoc = 16
     tag_latency = 7
     data_latency = 7
@@ -198,13 +198,13 @@ class MMUCache(PrefetchCache):
 class L2Cache(PrefetchCache):
     """L2 Cache with default values"""
 
-    size = '1280KB'
-    assoc = 10
+    size = '1024kB'
+    assoc = 16
     tag_latency = 15
     data_latency = 15
     response_latency = 1
     mshrs = 48
-    # tgts_per_mshr = 16
+    tgts_per_mshr = 16
     # write_buffers = 256
 
     def __init__(self):
@@ -219,13 +219,13 @@ class L2Cache(PrefetchCache):
 class L3Cache(PrefetchCache):
     """L3 Cache with default values"""
 
-    size = '40960KB'
-    assoc = 12
+    size = '65536kB'
+    assoc = 16
     tag_latency = 67
-    response_latency = 67
+    data_latency = 67
     response_latency = 1
     mshrs = 192
-    # tgts_per_mshr = 16
+    tgts_per_mshr = 16
     # write_buffers = 256
 
     clusivity = 'mostly_excl'

@@ -24,9 +24,9 @@ class MySystem(System):
 
         self.mem_mode = 'timing'
         mem_size = '32GB'
-        self.mem_ranges = [AddRange('100MB'), #kernel
-                           AddRange(0xC0000000, size=0x100000), #IO
-                           AddRange(Addr('4GB'), size = mem_size) #processes
+        self.mem_ranges = [AddrRange('100MB'), #kernel
+                           AddrRange(0xC0000000, size=0x100000), #IO
+                           AddrRange(Addr('4GB'), size = mem_size) #processes
                            ]
         
         self.cpu = self._CPUModel()
@@ -35,7 +35,7 @@ class MySystem(System):
         bus width set double as that of skylake-config """
         self.membus = SystemXBar(width = 384)
         self.membus.badaddr_responder = BadAddr()
-        self.membus.default = self.badaddr_responder.pio
+        self.membus.default = Self.badaddr_responder.pio
 
         self.system_port = self.membus.cpu_side_ports
 
@@ -53,15 +53,15 @@ class MySystem(System):
         self.cpu.dcache.connectBus(self.l2bus)
 
         self.cpu.l2cache = L2Cache()
-        self.cpu.mmucache = MMUCache()
-        self.cpu.mmucache.connectCPU(self.cpu)
+        # self.cpu.mmucache = MMUCache()
+        # self.cpu.mmucache.connectCPU(self.cpu)
         self.cpu.l2cache.connectCPUSideBus(self.l2bus)
 
         self.l3bus = L2XBar(width = 384,
                             snoop_filter = SnoopFilter(max_capacity='32MB'))
         
         self.cpu.l2cache.connectMemSideBus(self.l3bus)
-        self.cpu.mmucache.connectMem(self.l3bus)
+        # self.cpu.mmucache.connectMem(self.l3bus)
 
         self.l3cache = L3Cache()
         self.l3cache.connectCPUSideBus(self.l3bus)
@@ -69,9 +69,9 @@ class MySystem(System):
 
         self.cpu.createInterruptController()
 
-        self.cpu.interrupts[0].pio = self.membus.mem_side_ports
-        self.cpu.interrupts[0].int_requestor = self.membus.cpu_side_ports
-        self.cpu.interrupts[0].int_responder = self.membus.mem_side_ports
+        # self.cpu.interrupts[0].pio = self.membus.mem_side_ports
+        # self.cpu.interrupts[0].int_requestor = self.membus.cpu_side_ports
+        # self.cpu.interrupts[0].int_responder = self.membus.mem_side_ports
 
         self.createMemoryControllersDDR4()
 
