@@ -24,12 +24,12 @@ class port0(FUDesc):
     opList = [opDesc(opClass = 'IntAlu', opLat = 1, pipelined = True),
               opDesc(opClass = 'IntAlu', opLat = 1, pipelined = True),
               opDesc(opClass = 'SimdMultAcc', opLat = 10, pipelined = True),
-              opDesc(opClass = 'SimdFloatMultAcc', opLat = ,pipelined = True),
-              opDesc(opClass = 'SimdShift', opLat = , pipelined = True),
-              opDesc(opClass = 'SimdFloatDiv', opLat = , pipelined = True),
-              opDesc(opClass = 'SimdDiv', opLat = , pipelined = True),
-              opDesc(opclass = 'SimdAlu', opLat = , pipelined = True),
-              opDesc(opclass = 'SimdFloatAlu', opLat = , pipelined = True)
+              opDesc(opClass = 'SimdFloatMultAcc', opLat = 12, pipelined = True),
+              opDesc(opClass = 'SimdShift', opLat = 1, pipelined = True),
+              opDesc(opClass = 'SimdFloatDiv', opLat = 15, pipelined = True),
+              opDesc(opClass = 'SimdDiv', opLat = 8, pipelined = True),
+              opDesc(opclass = 'SimdAlu', opLat = 1, pipelined = True),
+              opDesc(opclass = 'SimdFloatAlu', opLat = 4, pipelined = True)
               ]
 
 """ Shuffle functional unit is not described in gem5 """
@@ -39,29 +39,32 @@ class port1(FUDesc):
               opDesc(opClass = 'IntDiv', opLat = 15, pipelined = True),
               opDesc(opClass = 'FloatMult', opLat = 4, pipelined = True),
               opDesc(opClass = 'SimdMultAcc', opLat = 10, pipelined = True),
-              opDesc(opClass = 'SimdFloatMultAcc', opLat = ,pipelined = True),
-              opDesc(opClass = 'SimdShift', opLat = , pipelined = True),
-              opDesc(opClass = 'SimdFloatDiv', opLat = , pipelined = True),
-              opDesc(opClass = 'SimdDiv', opLat = , pipelined = True),
-              opDesc(opclass = 'SimdAlu', opLat = , pipelined = True),
-              opDesc(opclass = 'SimdFloatAlu', opLat = , pipelined = True),
+              opDesc(opClass = 'SimdFloatMultAcc', opLat = 12,pipelined = True),
+              opDesc(opClass = 'SimdShift', opLat = 1, pipelined = True),
+              opDesc(opClass = 'SimdFloatDiv', opLat = 15, pipelined = True),
+              opDesc(opClass = 'SimdDiv', opLat = 8, pipelined = True),
+              opDesc(opclass = 'SimdAlu', opLat = 1, pipelined = True),
+              opDesc(opclass = 'SimdFloatAlu', opLat = 4, pipelined = True),
               opDesc(opClass = 'FloatAdd', opLat = 2, pipelined = True),
-              opDesc(opClass = 'SimdFloatAdd', opLat = , pipelined = True)
+              opDesc(opClass = 'SimdFloatAdd', opLat = 4, pipelined = True)
               ]
 
 class port2(FUDesc):
-    opList = [opDesc(opClass = 'memRead', opLat = , pipelined = True),
-              opDesc(opClass = 'FloatMemRead', opLat = , pipelined = True)
+    opList = [opDesc(opClass = 'memRead', opLat = 1, pipelined = True),
+              opDesc(opClass = 'FloatMemRead', opLat = 1, pipelined = True)
               ]
+    
+"""opLat in Load and Store units corresponds to the latency for generating memory address (AGU), 
+actual latency varies with the program flow"""
 
 class port3(FUDesc):
-    opList = [opDesc(opClass = 'memRead', opLat = , pipelined = True),
-              opDesc(opClass = 'FloatMemRead', opLat = , pipelined = True)
+    opList = [opDesc(opClass = 'memRead', opLat = 1, pipelined = True),
+              opDesc(opClass = 'FloatMemRead', opLat = 1, pipelined = True)
               ]
 
 class port4(FUDesc):
-    opList = [opDesc(opClass = 'memWrite', opLat = , pipelined = True),
-              opDesc(opClass = 'FloatMemWrite', opLat = , pipelined = True)
+    opList = [opDesc(opClass = 'memWrite', opLat = 1, pipelined = True),
+              opDesc(opClass = 'FloatMemWrite', opLat = 1, pipelined = True)
               ]
 
 """ FMA512 functional units which are part of AVX-512 Extensions are not described in gem5. 
@@ -71,15 +74,16 @@ class port5(FUDesc):
     opList = [opDesc(opClass = 'IntAlu', opLat = 1, pipelined = True),
               opDesc(opClass = 'IntMul', opLat = 1, pipelined = True),
               opDesc(opClass = 'SimdMultAcc', opLat = 10, pipelined = True),
-              opDesc(opClass = 'SimdFloatMultAcc', opLat = ,pipelined = True),
-              opDesc(opclass = 'SimdAlu', opLat = , pipelined = True),
-              opDesc(opclass = 'SimdFloatAlu', opLat = , pipelined = True),
-              opDesc(opclass = 'Matrix', opLat = , pipelined = True),
-              """ The below functional units are part of AMX (Advanced Matrix Extensions) """
-              opDesc(opClass = 'MatrixMov', opLat = , pipelind = True),
-              opDesc(opClass = 'MatrixOp', opLat = , pipelined = True),
-              opDesc(opClass = 'SimdMatMultAcc', opLat = , pipelined = True),
-              opDesc(opClass = 'SimdFloatMatMultAcc', opLat = , pipeined = True)
+              opDesc(opClass = 'SimdFloatMultAcc', opLat = 12,pipelined = True),
+              opDesc(opclass = 'SimdAlu', opLat = 1, pipelined = True),
+              opDesc(opclass = 'SimdFloatAlu', opLat = 4, pipelined = True),
+              # The below functional units are part of AMX (Advanced Matrix Extensions) AMX instruction 
+              # are introduced for the first time in 12th gen, latency data is not publically available
+              opDesc(opclass = 'Matrix', opLat = 10, pipelined = True),
+              opDesc(opClass = 'MatrixMov', opLat = 10, pipelind = True),
+              opDesc(opClass = 'MatrixOp', opLat = 10, pipelined = True),
+              opDesc(opClass = 'SimdMatMultAcc', opLat = 10, pipelined = True),
+              opDesc(opClass = 'SimdFloatMatMultAcc', opLat = 10, pipeined = True)
               ]
 
 """ Two IntAlu units to account for LEA, Shift and JMP """
@@ -89,26 +93,26 @@ class port6(FUDesc):
               ]
 
 class port7(FUDesc):
-    opList = [opDesc(opClass = 'memWrite', opLat = , pipelined = True),
-              opDesc(opClass = 'FloatMemWrite', opLat = , pipelined = True)
+    opList = [opDesc(opClass = 'memWrite', opLat = 1, pipelined = True),
+              opDesc(opClass = 'FloatMemWrite', opLat = 1, pipelined = True)
               ]
 
 class port8(FUDesc):
-    opList = [opDesc(opClass = 'memWrite', opLat = , pipelined = True),
-              opDesc(opClass = 'FloatMemWrite', opLat = , pipelined = True)
+    opList = [opDesc(opClass = 'memWrite', opLat = 1, pipelined = True),
+              opDesc(opClass = 'FloatMemWrite', opLat = 1, pipelined = True)
               ]
 
 class port9(FUDesc):
-    opList = [opDesc(opClass = 'memWrite', opLat = , pipelined = True),
-              opDesc(opClass = 'FloatMemWrite', opLat = , pipelined = True)
+    opList = [opDesc(opClass = 'memWrite', opLat = 1, pipelined = True),
+              opDesc(opClass = 'FloatMemWrite', opLat = 1, pipelined = True)
               ]
 
 class port10(FUDesc):
     opList = [opDesc(opClass = 'IntAlu', opLat = 1, pipelined = True)]
 
 class port11(FUDesc):
-    opList = [opDesc(opClass = 'memRead', opLat = , pipelined = True),
-              opDesc(opClass = 'FloatMemRead', opLat = , pipelined = True)
+    opList = [opDesc(opClass = 'memRead', opLat = 1, pipelined = True),
+              opDesc(opClass = 'FloatMemRead', opLat = 1, pipelined = True)
               ]    
 
 class ExecUnits(FUPool):
