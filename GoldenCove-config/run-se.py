@@ -2,6 +2,7 @@
 # Undergraduate EE IITB (2024)
 
 import m5
+m5.util.addToPath('system/')
 from m5.objects import *
 import argparse
 from system.se  import MySystem
@@ -19,11 +20,20 @@ class TestSystem(MySystem):
     _CPUModel = valid_configs[args.config]
 
 system = TestSystem()
-system.setTestBinary(args.binary)
+#system.setTestBinary(args.binary)
+system.workload = SEWorkload.init_compatible(args.binary)
+process = Process()
+process.cmd = [args.binary]
+system.cpu.workload = process
+system.cpu.createThreads()
 root = Root(full_system = False, system = system)
+print(system.cpu)
 m5.instantiate()
 
 exit_event = m5.simulate()
+
+print('Exiting @ tick {} because {}'
+      .format(m5.curTick(), exit_event.getCause()))
 
 if exit_event.getCause() != 'exiting with last active thread context':
     print("Benchmark failed with bad exit cause.")

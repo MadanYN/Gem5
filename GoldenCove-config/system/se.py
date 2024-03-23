@@ -8,12 +8,12 @@ class. """
 
 import m5
 from m5.objects import *
-from core import *
 from caches import *
+from core import *
 
 class MySystem(System):
     # Choose the cpu model from core
-    _CPUModel = VerbatimCPU
+    _CPUModel = BaseCPU
 
     def __init__(self):
         super(MySystem, self).__init__()

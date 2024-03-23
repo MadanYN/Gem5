@@ -187,7 +187,7 @@ class VerbatimCPU(DerivO3CPU):
     """ Uncalibrated: Configured based on micro-architecture documentation """
 
     branchPred = BranchPred()
-    isa = ArmISA()
+    #isa = ArmISA()
     # Pipeline delays
     # https://gem5-users.gem5.narkive.com/LNMJQ1M5/model-deeper-pipeline-in-x86#post2
     # to model 15 stage pipeline choose depth parameter as 3
@@ -226,7 +226,7 @@ class TunedCPU(DerivO3CPU):
     """ Calibrated: configured to match the performance of hardware """
 
     branchPred = BranchPred()
-    isa = ArmISA()
+    #isa = ArmISA()
 
     # Pipeline delays
     fetchToDecodeDelay = depth

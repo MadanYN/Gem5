@@ -45,7 +45,7 @@ class MySystem(System):
     self.clk_domain.voltage_domain = VoltageDomain()
 
     self.mem_mode = 'timing'
-    mem_size = '32GB'
+    mem_size = '8GB'
     self.mem_ranges = [AddrRange('100MB'), # For kernel
                       AddrRange(0xC0000000, size=0x100000), # For I/0
                       AddrRange(Addr('4GB'), size = mem_size) # All data
@@ -100,9 +100,9 @@ class MySystem(System):
     # create the interrupt controller for the CPU
     self.cpu.createInterruptController()
 
-    #self.cpu.interrupts[0].pio = self.membus.mem_side_ports
-    #self.cpu.interrupts[0].int_requestor = self.membus.cpu_side_ports
-    #self.cpu.interrupts[0].int_responder = self.membus.mem_side_ports
+    self.cpu.interrupts[0].pio = self.membus.mem_side_ports
+    self.cpu.interrupts[0].int_requestor = self.membus.cpu_side_ports
+    self.cpu.interrupts[0].int_responder = self.membus.mem_side_ports
 
     self.createMemoryControllersDDR4()
 
