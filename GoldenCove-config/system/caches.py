@@ -23,6 +23,8 @@ class PrefetchCache(Cache):
         """Tag and data are accessed parallely"""
         self.sequential_access = False 
 
+""" The sizes and associvity of caches are changed to nearest powers of 2 to be compatible with gem5 """
+
 class L1Cache(PrefetchCache):
     """Base L1 cache with default params"""
 
@@ -219,7 +221,7 @@ class L2Cache(PrefetchCache):
 class L3Cache(PrefetchCache):
     """L3 Cache with default values"""
 
-    size = '65536kB'
+    size = '32768kB'
     assoc = 16
     tag_latency = 67
     data_latency = 67
