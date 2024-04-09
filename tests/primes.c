@@ -5,7 +5,7 @@
 #define N 1000000
 
 int main(){
-    // bool isPrime[N+1];
+    // bool isPrime[N+1]
     bool *isPrime = (bool*)malloc((N+1) * sizeof(bool));
     if (isPrime == NULL) {
         perror("Memory allocation failed");
