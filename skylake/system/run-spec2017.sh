@@ -1,8 +1,7 @@
 #!/bin/bash
 #
-# run_gem5_alpha_spec06_benchmark.sh
-# Author: Mark Gottscho Email: mgottscho@ucla.edu
-# Copyright (C) 2014 Mark Gottscho
+# run-spec2017.sh
+# Author: Madan Y N Email: madanyn3@gmail.com
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
