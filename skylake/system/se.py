@@ -45,7 +45,7 @@ class MySystem(System):
     self.clk_domain.voltage_domain = VoltageDomain()
 
     self.mem_mode = 'timing'
-    mem_size = '8GB'
+    mem_size = '2GB'
     self.mem_ranges = [AddrRange('100MB'), # For kernel
                       AddrRange(0xC0000000, size=0x100000), # For I/0
                       AddrRange(Addr('4GB'), size = mem_size) # All data

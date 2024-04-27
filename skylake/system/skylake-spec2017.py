@@ -1,10 +1,14 @@
+import sys
+sys.path.append('/cdt/gem5/configs/')
 import m5
 from m5.objects import *
+import common
+from common import Options
+
 import argparse
 import optparse
 from se  import MySystem
 from core import *
-import system as sys
 
 import spec2017Benchmarks
 
@@ -16,13 +20,15 @@ import spec2017Benchmarks
 #parser.add_argument('binary', type = str, help = "Path to binary to run")
 #args = parser.parse_args()
 
-parser = optparse.OptionParser()
+parser = argparse.ArgumentParser()
 Options.addCommonOptions(parser)
 Options.addSEOptions(parser)
 
-parser.add_option("-b", "--benchmark", type="string", default="", help="The SPEC benchmark to be loaded.")
-parser.add_option("--benchmark_stdout", type="string", default="", help="Absolute path for stdout redirection for the benchmark.")
-parser.add_option("--benchmark_stderr", type="string", default="", help="Absolute path for stderr redirection for the benchmark.")
+parser.add_argument("-b", "--benchmark", type=str, default="", help="The SPEC benchmark to be loaded.")
+parser.add_argument("--benchmark_stdout", type=str, default="", help="Absolute path for stdout redirection for the benchmark.")
+parser.add_argument("--benchmark_stderr", type=str, default="", help="Absolute path for stderr redirection for the benchmark.")
+
+options = parser.parse_args()
 
 if options.benchmark:
     print('Selected SPEC CPU2017 benchmark', end='')
@@ -40,8 +46,11 @@ if options.benchmark:
     elif options.benchmark == 'omnetpp':
         print('--> omnetpp')
         process = spec2017Benchmarks.omnetpp
-    elif options.benchmark == 'xalancmbk':
-        print('--> xalancmbk')
+    elif options.benchmark == 'xalancbmk':
+        print('--> xalancbmk')
+        process = spec2017Benchmarks.xalancbmk
+    elif options.benchmark == 'x264':
+        print('--> x264')
         process = spec2017Benchmarks.x264
     elif options.benchmark == 'deepsjeng':
         print('--> deepsjeng')
@@ -102,13 +111,15 @@ class TestSystem(MySystem):
 
 # #binary = 'tests/my_tests/primes_arm'
 # binary = 'tests/test-progs/hello/bin/x86/linux/hello'
-# system = TestSystem()
-# system.workload = SEWorkload.init_compatible(binary)
+system = TestSystem()
+system.workload = SEWorkload.init_compatible(process.executable)
 
-# process = Process()
+# process = Process() 
+system.cpu.workload = process 
+#    print(process.cmd)
 # process.cmd = [binary]
 # system.cpu.workload = process
-# system.cpu.createThreads()
+system.cpu.createThreads()
 
 root = Root(full_system = False, system = system)
 m5.instantiate()
