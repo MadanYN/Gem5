@@ -256,7 +256,7 @@ for (( idx = 1; idx <= ${#args[@]}; idx++ )); do
 
     echo "Launching gem5$FLAG on $BENCHMARK benchmark"
     OUTPUT_DIR=/cdt/gem5/m5out/spec2017/$BENCHMARK/debug
-    $GEM5_DIR/build/X86/gem5$FLAG --outdir=$OUTPUT_DIR $GEM5_DIR/configs/my_projects/Gem5/skylake/system/skylake-spec2017.py --benchmark=$BENCHMARK --benchmark_stderr=$OUTPUT_DIR/$BENCHMARK.err > /dev/null 2>&1 | tee -a $SCRIPT_OUT &
+    $GEM5_DIR/build/X86/gem5$FLAG --outdir=$OUTPUT_DIR $GEM5_DIR/configs/my_projects/Gem5/skylake/system/skylake-spec2017.py --benchmark=$BENCHMARK --benchmark_stderr=$OUTPUT_DIR/$BENCHMARK.err > $SCRIPT_OUT 2>&1 &
 
 done
 
