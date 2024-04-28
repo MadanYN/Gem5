@@ -44,9 +44,12 @@ fi
 # Get command line input. We will need to check these.
 args=("$@")                # Loading arguments into a array   
 
-FLAG=none
-if [[ ${args["$ARGC"-1]} == --* ]]; then # Additional flag for debug and other functionalities
+FLAG="none"
+if [[ ${args["$ARGC"-1]} == .* ]]; then # Additional flag for debug and other functionalities
     FLAG=${args["$ARGC"-1]}
+else
+    echo "Invalid gem5 mode, it must be one of .opt .fast .debug"
+    exit
 fi 
  
 ######################### BENCHMARK CODENAMES ####################
@@ -79,13 +82,9 @@ ALL_CODE=all
 INT_CODE=int
 FP_CODE=fp
 
-for(( idx = 0; idx < $#; idx++ )); do
+for(( idx = 1; idx <= $#; idx++ )); do
 
-    if (( $idx == $# - 1 && $FLAG == none )); then
-        break
-    fi
-
-    BENCHMARK=${args[idx]}
+    BENCHMARK=${args[idx-1]}
     
     ##################################################################
     
@@ -205,18 +204,8 @@ for(( idx = 0; idx < $#; idx++ )); do
     
     # Actually launch gem5!
 
-
-    if [[ $FLAG == "--debug" ]]; then # gem5 in debug mode
-        echo "Initiating gem5 debug mode"
-        OUTPUT_DIR=/cdt/gem5/m5out/spec2017/$BENCHMARK/debug
-        $GEM5_DIR/build/X86/gem5.debug --outdir=$OUTPUT_DIR $GEM5_DIR/configs/my_projects/Gem5/skylake/system/skylake-spec2017.py --benchmark=$BENCHMARK --benchmark_stderr=$OUTPUT_DIR/$BENCHMARK.err | tee -a $SCRIPT_OUT > /dev/null 2>&1 &
-    elif [[ $FLAG == "--fast" ]]; then # gem5 fast
-        echo "Running gem5 fast"
-        OUTPUT_DIR=/cdt/gem5/m5out/spec2017/$BENCHMARK/debug
-        $GEM5_DIR/build/X86/gem5.fast --outdir=$OUTPUT_DIR $GEM5_DIR/configs/my_projects/Gem5/skylake/system/skylake-spec2017.py --benchmark=$BENCHMARK --benchmark_stderr=$OUTPUT_DIR/$BENCHMARK.err | tee -a $SCRIPT_OUT > /dev/null 2>&1 &
-    else
-        echo "Running gem5 opt"
-        $GEM5_DIR/build/X86/gem5.opt --outdir=$OUTPUT_DIR $GEM5_DIR/configs/my_projects/Gem5/skylake/system/skylake-spec2017.py --benchmark=$BENCHMARK --benchmark_stderr=$OUTPUT_DIR/$BENCHMARK.err | tee -a $SCRIPT_OUT > /dev/null 2>&1 &
-    fi
+    echo "Launching gem5$FLAG"
+    OUTPUT_DIR=/cdt/gem5/m5out/spec2017/$BENCHMARK/debug
+    $GEM5_DIR/build/X86/gem5$FLAG --outdir=$OUTPUT_DIR $GEM5_DIR/configs/my_projects/Gem5/skylake/system/skylake-spec2017.py --benchmark=$BENCHMARK --benchmark_stderr=$OUTPUT_DIR/$BENCHMARK.err | tee -a $SCRIPT_OUT > /dev/null 2>&1 &
 
 done
