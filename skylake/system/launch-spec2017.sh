@@ -51,7 +51,9 @@ else
     echo "Invalid gem5 mode, it must be one of .opt .fast .debug"
     exit
 fi 
- 
+
+unset 'args[${#args[@]}-1]'
+
 ######################### BENCHMARK CODENAMES ####################
 
 # intspeed
@@ -126,11 +128,9 @@ elif [[ ${args[0]} == 'all' ]]; then
     done
 fi
 
-echo "Launching benchmarks: ${args[@]}"
+echo "Launching benchmarks: ${args[@]}" 
 
-exit 
-
-for (( idx = 1; idx <= $ARGC; idx++ )); do
+for (( idx = 1; idx <= ${#args[@]}; idx++ )); do
 
     BENCHMARK=${args[idx-1]}
     
@@ -222,8 +222,10 @@ for (( idx = 1; idx <= $ARGC; idx++ )); do
 
     # Output directory
     if [[ $BENCHMARK_CODE != $ALL_CODE || $BENCHMARK_CODE != $INT_CODE || $BENCHMARK_CODE != $FP_CODE ]]; then
-        mkdir $GEM5_DIR/m5out/spec2017/$BENCHMARK
         OUTPUT_DIR=$GEM5_DIR/m5out/spec2017/$BENCHMARK
+        if [[ !(-d "$OUTPUT_DIR") ]]; then
+            mkdir $OUTPUT_DIR
+        fi
     fi
 
     SCRIPT_OUT=$OUTPUT_DIR/runscript.log                                                                    # File log for this script's stdout henceforth
@@ -252,8 +254,10 @@ for (( idx = 1; idx <= $ARGC; idx++ )); do
     
     # Actually launch gem5!
 
-    echo "Launching gem5$FLAG"
+    echo "Launching gem5$FLAG on $BENCHMARK benchmark"
     OUTPUT_DIR=/cdt/gem5/m5out/spec2017/$BENCHMARK/debug
-    $GEM5_DIR/build/X86/gem5$FLAG --outdir=$OUTPUT_DIR $GEM5_DIR/configs/my_projects/Gem5/skylake/system/skylake-spec2017.py --benchmark=$BENCHMARK --benchmark_stderr=$OUTPUT_DIR/$BENCHMARK.err | tee -a $SCRIPT_OUT > /dev/null 2>&1 &
+    $GEM5_DIR/build/X86/gem5$FLAG --outdir=$OUTPUT_DIR $GEM5_DIR/configs/my_projects/Gem5/skylake/system/skylake-spec2017.py --benchmark=$BENCHMARK --benchmark_stderr=$OUTPUT_DIR/$BENCHMARK.err > /dev/null 2>&1 | tee -a $SCRIPT_OUT &
 
 done
+
+echo "All the launched gem5 processes are running in background"
