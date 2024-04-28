@@ -44,6 +44,7 @@ fi
 # Get command line input. We will need to check these.
 args=("$@")                # Loading arguments into a array   
 
+FLAG=none
 if [[ ${args["$ARGC"-1]} == --* ]]; then # Additional flag for debug and other functionalities
     FLAG=${args["$ARGC"-1]}
 fi 
@@ -78,9 +79,13 @@ ALL_CODE=all
 INT_CODE=int
 FP_CODE=fp
 
-for(( idx = 1; idx < $#; idx++ )); do
+for(( idx = 0; idx < $#; idx++ )); do
 
-    BENCHMARK=${args[idx-1]}
+    if (( $idx == $# - 1 && $FLAG == none )); then
+        break
+    fi
+
+    BENCHMARK=${args[idx]}
     
     ##################################################################
     
