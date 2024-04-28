@@ -77,12 +77,60 @@ NAB_CODE=644.nab_s
 FOTONIK3D_CODE=649.fotonik3d_s
 ROMS_CODE=654.roms_s
 
-# set of benchmarks
-ALL_CODE=all
-INT_CODE=int
-FP_CODE=fp
+int=("perlbench" "gcc" "mcf" "omnetpp" "xalancbmk" "x264" "deepsjeng" "leela" "exchange2" "xz")
+fp=("bwaves" "cactuBSSN" "lbm" "wrf" "cam4" "imagick" "nab" "fotonik3d" "roms")
+all=("${int[@]}" "${fp[@]}")
 
-for(( idx = 1; idx <= $#; idx++ )); do
+declare -A ignore_dict
+
+if [[ ${args[0]} == 'int' ]]; then
+    for arg in "${args[@]}"; do
+        if [[ $arg == ^* ]]; then
+            ignore_dict["${arg:1}"]=1
+        fi
+    done
+
+    args=()
+    for item in "${int[@]}"; do
+        if [[ !( -n ${ignore_dict["$item"]} ) ]]; then
+            args+=("$item")
+        fi
+    done
+
+elif [[ ${args[0]} == 'fp' ]]; then
+    for arg in "${args[@]}"; do
+        if [[ $arg == ^* ]]; then
+            ignore_dict["${arg:1}"]=1
+        fi
+    done
+
+    args=()
+    for item in "${fp[@]}"; do
+        if [[ !( -n ${ignore_dict["$item"]} ) ]]; then
+            args+=("$item")
+        fi
+    done
+
+elif [[ ${args[0]} == 'all' ]]; then
+    for arg in "${args[@]}"; do
+        if [[ $arg == ^* ]]; then
+            ignore_dict["${arg:1}"]=1
+        fi
+    done
+
+    args=()
+    for item in "${all[@]}"; do
+        if [[ !( -n ${ignore_dict["$item"]} ) ]]; then
+            args+=("$item")
+        fi
+    done
+fi
+
+echo "Launching benchmarks: ${args[@]}"
+
+exit 
+
+for (( idx = 1; idx <= $ARGC; idx++ )); do
 
     BENCHMARK=${args[idx-1]}
     
@@ -155,15 +203,15 @@ for(( idx = 1; idx <= $#; idx++ )); do
         BENCHMARK_CODE=$ROMS_CODE
     fi
 
-    if [[ "$BENCHMARK" == "all" ]]; then
-        BENCHMARK_CODE=$ALL_CODE
-    fi
-    if [[ "$BENCHMARK" == "int" ]]; then
-        BENCHMARK_CODE=$INT_CODE
-    fi
-    if [[ "$BENCHMARK" == "fp" ]]; then
-        BENCHMARK_CODE=$FP_CODE
-    fi
+    # if [[ "$BENCHMARK" == "all" ]]; then
+    #     BENCHMARK_CODE=$ALL_CODE
+    # fi
+    # if [[ "$BENCHMARK" == "int" ]]; then
+    #     BENCHMARK_CODE=$INT_CODE
+    # fi
+    # if [[ "$BENCHMARK" == "fp" ]]; then
+    #     BENCHMARK_CODE=$FP_CODE
+    # fi
 
     # Sanity check
     if [[ "$BENCHMARK_CODE" == "none" ]]; then
