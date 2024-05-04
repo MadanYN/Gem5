@@ -88,7 +88,7 @@ wrf.cmd = [wrf.executable]
 
 # 627.cam4_s
 cam4 = Process()
-cam4.executable = spec_dir + '627.cam4_s/exe/cam_s' + x86_suffix
+cam4.executable = spec_dir + '627.cam4_s/exe/cam4_s' + x86_suffix
 cam4.cmd = [cam4.executable]
 
 # 628.pop2_s

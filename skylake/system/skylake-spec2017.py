@@ -25,6 +25,7 @@ Options.addCommonOptions(parser)
 Options.addSEOptions(parser)
 
 parser.add_argument("-b", "--benchmark", type=str, default="", help="The SPEC benchmark to be loaded.")
+parser.add_argument("--isa", type=str, default="", help="ISA of the target machine")
 parser.add_argument("--benchmark_stdout", type=str, default="", help="Absolute path for stdout redirection for the benchmark.")
 parser.add_argument("--benchmark_stderr", type=str, default="", help="Absolute path for stderr redirection for the benchmark.")
 
@@ -107,11 +108,18 @@ else:
 
 class TestSystem(MySystem):
     _CPUModel = TunedCPU()
-    _CPUModel.isa = X86ISA()
+    def __init__(self, isa):
+        if isa == 'ARM':
+            self._CPUModel.isa = ArmISA()
+        elif isa == 'RISCV':
+            self._CPUModel.isa = RiscvISA()
+        else:
+            self._CPUModel.isa = X86ISA()
 
 # #binary = 'tests/my_tests/primes_arm'
 # binary = 'tests/test-progs/hello/bin/x86/linux/hello'
-system = TestSystem()
+system = TestSystem(options.isa)
+print(f"ISA --> {options.isa}")
 system.workload = SEWorkload.init_compatible(process.executable)
 
 # process = Process() 

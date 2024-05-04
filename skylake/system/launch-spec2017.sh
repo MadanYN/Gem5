@@ -45,12 +45,22 @@ fi
 args=("$@")                # Loading arguments into a array   
 
 FLAG="none"
+ISA=X86
 if [[ ${args["$ARGC"-1]} == .* ]]; then # Additional flag for debug and other functionalities
     FLAG=${args["$ARGC"-1]}
 else
     echo "Invalid gem5 mode, it must be one of .opt .fast .debug"
     exit
-fi 
+fi
+
+if [[ ${args[0]} == --* ]]; then # ISA specification
+    if [[ ${args[0]} == --arm ]]; then
+        ISA=ARM
+    elif [[ ${args[0]} == --riscv ]]; then
+        ISA=RISCV
+    fi
+    args=("${args[@]:1}")
+fi
 
 unset 'args[${#args[@]}-1]'
 
@@ -80,7 +90,7 @@ FOTONIK3D_CODE=649.fotonik3d_s
 ROMS_CODE=654.roms_s
 
 int=("perlbench" "gcc" "mcf" "omnetpp" "xalancbmk" "x264" "deepsjeng" "leela" "exchange2" "xz")
-fp=("bwaves" "cactuBSSN" "lbm" "wrf" "cam4" "imagick" "nab" "fotonik3d" "roms")
+fp=("bwaves" "cactuBSSN" "lbm" "wrf" "cam4" "pop2" "imagick" "nab" "fotonik3d" "roms")
 all=("${int[@]}" "${fp[@]}")
 
 declare -A ignore_dict
@@ -255,8 +265,10 @@ for (( idx = 1; idx <= ${#args[@]}; idx++ )); do
     # Actually launch gem5!
 
     echo "Launching gem5$FLAG on $BENCHMARK benchmark"
+    echo "ISA --> $ISA"
     OUTPUT_DIR=/cdt/gem5/m5out/spec2017/$BENCHMARK/debug
-    $GEM5_DIR/build/X86/gem5$FLAG --outdir=$OUTPUT_DIR $GEM5_DIR/configs/my_projects/Gem5/skylake/system/skylake-spec2017.py --benchmark=$BENCHMARK --benchmark_stderr=$OUTPUT_DIR/$BENCHMARK.err > $SCRIPT_OUT 2>&1 &
+    $GEM5_DIR/build/X86/gem5$FLAG --outdir=$OUTPUT_DIR $GEM5_DIR/configs/my_projects/Gem5/skylake/system/skylake-spec2017.py --isa=$ISA --benchmark=$BENCHMARK --benchmark_stderr=$OUTPUT_DIR/$BENCHMARK.err 
+# > $SCRIPT_OUT 2>&1 &
 
 done
 
