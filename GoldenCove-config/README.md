@@ -1,7 +1,7 @@
-Directory: Gem5/GoldenCove-config
-Author: Madan Y N
-Year: 2024
-email: madanyn3@gmail.com
+Directory: Gem5/GoldenCove-config\
+Author: Madan Y N\
+Year: 2024\
+email: madanyn3@gmail.com\
 
 * This directory contains */system* directory and run-se.py file
 * run-se.py launches a single-core simulation of GLC(GoldenCove) config

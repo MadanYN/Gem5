@@ -1,7 +1,7 @@
-Directory: Gem5/skylake/system
-Author: Madan Y N
-Year: 2014
-email: madanyn3@gmail.com
+Directory: Gem5/skylake/system\
+Author: Madan Y N\
+Year: 2014\
+email: madanyn3@gmail.com\
 
 * This directory contains skykake.py, se.py, core.py and caches.py that describe the Intel Skylake architecture to run simulations in Gem5 SE(System-call Emulation) mode.
 * launch-spec2017.sh file automates launching simulation on one or more of the spec2017 benchmarks and skylake-spec2017.py and spec2017Benchmarks are helper files

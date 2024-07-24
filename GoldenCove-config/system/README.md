@@ -1,7 +1,7 @@
-Directory: Gem5/GoldenCove-config/system
-Author: Madan Y N
-Year: 2024
-email: madanyn3@gmail.com
+Directory: Gem5/GoldenCove-config/system\
+Author: Madan Y N\
+Year: 2024\
+email: madanyn3@gmail.com\
 
 * This directory contains files glc.py, core.py and caches.py describing the P-core of of the Intel GoldenCove architecture with three levels of cache
 * launch-spec2017.sh file automates launching simulation on one or more of the spec2017 benchmarks and glc-spec2017.py is a helper file

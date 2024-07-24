@@ -1,7 +1,7 @@
-Directory: Gem5/configs
-Author: Madan Y N
-Year: 2024
-email: madanyn3@gmail.com
+Directory: Gem5/configs\
+Author: Madan Y N\
+Year: 2024\
+email: madanyn3@gmail.com\
 
 * This directory contains simple_arm.py, simple_x86.py, o3_arm.py and o3_x86.py files that use the cache hierarchy described in caches.py
 * These configs use the standard cpu models provided by gem5
