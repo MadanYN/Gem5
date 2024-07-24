@@ -1,6 +1,11 @@
 # Author: Madan Y N
 # Undergraduate EE IITB (2024)
 
+"""
+Top-level file to run simulations on GLC
+Path to the binary is given here - Change binary to run appropriate benchmark
+"""
+
 import m5
 from m5.objects import *
 import argparse
