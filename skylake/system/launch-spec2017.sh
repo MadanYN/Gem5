@@ -34,8 +34,8 @@ if [[ "$ARGC" < 1 ]]; then # Bad number of arguments.
     echo "This script runs a single gem5 simulation of one or more SPEC CPU2017 benchmarks"
     echo ""
     echo "USAGE: launch-spec2017 <one or more BENCHMARKS> --<Gem5 mode[optional]>"
-    echo "EXAMPLE: ./launch-spec2017.sh gcc mcf lbm --fast"
-    echo "EXAMPLE: ./launch-spec2017.sh fp"
+    echo "EXAMPLE: ./launch-spec2017.sh --ARM gcc mcf lbm .fast"
+    echo "EXAMPLE: ./launch-spec2017.sh --X86 fp"
     echo ""
     echo "A single --help help or -h argument will bring this message back."
     exit
@@ -44,13 +44,13 @@ fi
 # Get command line input. We will need to check these.
 args=("$@")                # Loading arguments into a array   
 
-FLAG="none"
+FLAG=.fast
 ISA=X86
 if [[ ${args["$ARGC"-1]} == .* ]]; then # Additional flag for debug and other functionalities
     FLAG=${args["$ARGC"-1]}
+    unset 'args[${#args[@]}-1]'
 else
-    echo "Invalid gem5 mode, it must be one of .opt .fast .debug"
-    exit
+    echo "No explicit mode provided, running gem5 in 'fast' mode"
 fi
 
 if [[ ${args[0]} == --* ]]; then # ISA specification
@@ -61,8 +61,6 @@ if [[ ${args[0]} == --* ]]; then # ISA specification
     fi
     args=("${args[@]:1}")
 fi
-
-unset 'args[${#args[@]}-1]'
 
 ######################### BENCHMARK CODENAMES ####################
 
