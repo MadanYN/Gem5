@@ -1,3 +1,8 @@
+# File: o3_arm.py
+# Author: Madan Y N
+# Year: 2024
+# email: madanyn3@gmail.com
+
 #simple in-order x86 single-core cpu architecture with two-level cache architecture in sys emulation mode
 
 import m5

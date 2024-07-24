@@ -1,5 +1,7 @@
+# File: glc.py
 # Author: Madan Y N
-# Undergraduate EE IITB (2024)
+# Year: 2024
+# email: madanyn3@gmail.com
 
 """
 Top-level file to run simulations on GLC

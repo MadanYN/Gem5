@@ -1,5 +1,7 @@
+# File: core.py
 # Author: Madan Y N
-# Undergraduate EE IITB (2024)
+# Year: 2024
+# email: madanyn3@gmail.com
 
 """
 The file contains decription of a single threaded(No HyperThreading) 

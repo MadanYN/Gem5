@@ -1,3 +1,8 @@
+# File: glc-spec2017.py
+# Author: Madan Y N
+# Year: 2024
+# email: madanyn3@gmail.com
+
 import sys
 sys.path.append('/cdt/gem5/configs/')
 import m5

@@ -1,5 +1,7 @@
+# File: se.py
 # Author: Madan Y N
-# Undergraduate EE IITB (2024)
+# Year: 2024
+# email: madanyn3@gmail.com
 
 """This file contains configuration of P-core of Intel Alder Lake 
 processor based on Golden Cove microarchictecure. SimpleOpts 
