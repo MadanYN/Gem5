@@ -1,7 +1,7 @@
 Directory: Gem5\
 Author: Madan Y N\
 Year: 2024\
-email: madanyn3@gmail.com \
+email: madanyn3@gmail.com
 
 * This directory contains the codebase of the BTP - A Detailed Analysis of Contemporary Architectures
 * Refer to the README files in each subdirectory to know more about it
